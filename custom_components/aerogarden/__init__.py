@@ -94,14 +94,17 @@ class AerogardenAPI:
         return self._data[macaddr].get(field, None)
 
     def light_toggle(self, macaddr):
+        """
+        Toggles between Bright, Dimmed, and Off.
+        I couldn't find any way to set a specific state, it just cycles between the three.
+        """
         if macaddr not in self._data:
             return None
         post_data = {
             "airGuid": macaddr,
             "chooseGarden": self.garden_property(macaddr, "chooseGarden"),
             "userID": self._userid,
-            "plantConfig": '{ "lightTemp" : %d }'
-            % (self.garden_property(macaddr, "lightTemp")),
+            "plantConfig": '{ "lightTemp" : 1 }',  # this value seems to not matter
         }
         url = self._host + self._update_url
         _LOGGER.debug(f"Sending POST data to toggle light: {post_data}")
