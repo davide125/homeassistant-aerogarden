@@ -81,7 +81,7 @@ class AerogardenAPI:
 
     def garden_name(self, macaddr):
         multi_garden = self.garden_property(macaddr, "chooseGarden")
-        if multi_garden is None:
+        if not multi_garden:
             return self.garden_property(macaddr, "plantedName")
         multi_garden_label = "left" if multi_garden == 0 else "right"
         return self.garden_property(macaddr, "plantedName") + "_" + multi_garden_label
