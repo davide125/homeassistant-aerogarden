@@ -146,8 +146,8 @@ class AerogardenAPI:
                 garden["plantedName"] = base64.b64decode(garden["plantedName"]).decode(
                     "utf-8"
                 )
-            id = garden.get("configID", None)
-            gardenmac = garden["airGuid"] + "-" + ("" if id is None else str(id))
+            # id = garden.get("configID", None)
+            gardenmac = garden["airGuid"]  # + "-" + ("" if id is None else str(id))
             data[gardenmac] = garden
         _LOGGER.debug("Fetched data {}".format(data))
         self._data = data
