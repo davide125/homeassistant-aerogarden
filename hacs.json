@@ -1,0 +1,6 @@
+{
+  "name": "aerogarden",
+  "render_readme": true,
+  "content_in_root": false,
+  "domains": ["binary_sensor", "light", "sensor"]
+}
