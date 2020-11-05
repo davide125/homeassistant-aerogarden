@@ -7,10 +7,10 @@ from .. import aerogarden
 
 _LOGGER = logging.getLogger(__name__)
 
-DEPENDENCIES = ['aerogarden']
+DEPENDENCIES = ["aerogarden"]
+
 
 class AerogardenBinarySensor(BinarySensorDevice):
-
     def __init__(self, macaddr, aerogarden_api, field, label=None, icon=None):
 
         self._aerogarden = aerogarden_api
@@ -23,9 +23,12 @@ class AerogardenBinarySensor(BinarySensorDevice):
 
         self._garden_name = self._aerogarden.garden_name(self._macaddr)
 
-        self._name = "%s %s %s" % (aerogarden.SENSOR_PREFIX, self._garden_name, self._label)
+        self._name = "%s %s %s" % (
+            aerogarden.SENSOR_PREFIX,
+            self._garden_name,
+            self._label,
+        )
         self._state = self._aerogarden.garden_property(self._macaddr, self._field)
-
 
     @property
     def name(self):
@@ -34,7 +37,7 @@ class AerogardenBinarySensor(BinarySensorDevice):
     @property
     def is_on(self):
         if self._state == 1:
-             return True
+            return True
         return False
 
     @property
@@ -51,30 +54,33 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     ag = hass.data[aerogarden.DATA_AEROGARDEN]
 
     sensors = []
-    sensor_fields = { 
-#        "lightStat" : { 
-#            "label" : "light",
-#            "icon" : "mdi:lightbulb"
-#        },
-        "pumpStat" : { 
-            "label" : "pump",
-            "icon" : "mdi:water-pump",
+    sensor_fields = {
+        #        "lightStat" : {
+        #            "label" : "light",
+        #            "icon" : "mdi:lightbulb"
+        #        },
+        "pumpStat": {
+            "label": "pump",
+            "icon": "mdi:water-pump",
         },
-        "nutriStatus" : { 
-            "label" : "need nutrients",
-            "icon" : "mdi:cup-water",
+        "nutriStatus": {
+            "label": "need nutrients",
+            "icon": "mdi:cup-water",
         },
-       "pumpHydro" : { 
-            "label" : "need water",
-            "icon" : "mdi:water",
-        }
+        "pumpHydro": {
+            "label": "need water",
+            "icon": "mdi:water",
+        },
     }
 
     for garden in ag.gardens:
 
         for field in sensor_fields.keys():
-             s = sensor_fields[field]
-             sensors.append(AerogardenBinarySensor(garden, ag, field, label=s["label"], icon=s["icon"]))
+            s = sensor_fields[field]
+            sensors.append(
+                AerogardenBinarySensor(
+                    garden, ag, field, label=s["label"], icon=s["icon"]
+                )
+            )
 
     add_entities(sensors)
-

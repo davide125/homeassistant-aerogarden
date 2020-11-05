@@ -6,10 +6,10 @@ from .. import aerogarden
 
 _LOGGER = logging.getLogger(__name__)
 
-DEPENDENCIES = ['aerogarden']
+DEPENDENCIES = ["aerogarden"]
+
 
 class AerogardenLight(Light):
-
     def __init__(self, macaddr, aerogarden_api, field="lightStat", label="light"):
 
         self._aerogarden = aerogarden_api
@@ -21,7 +21,11 @@ class AerogardenLight(Light):
 
         self._garden_name = self._aerogarden.garden_name(self._macaddr)
 
-        self._name = "%s %s %s" % (aerogarden.SENSOR_PREFIX, self._garden_name, self._label)
+        self._name = "%s %s %s" % (
+            aerogarden.SENSOR_PREFIX,
+            self._garden_name,
+            self._label,
+        )
         self._state = self._aerogarden.garden_property(self._macaddr, self._field)
 
     @property
@@ -31,7 +35,7 @@ class AerogardenLight(Light):
     @property
     def is_on(self):
         if self._state == 1:
-             return True
+            return True
         return False
 
     def turn_on(self, **kwargs):
@@ -58,4 +62,3 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         lights.append(AerogardenLight(garden, ag))
 
     add_devices(lights)
-
