@@ -11,16 +11,13 @@ DEPENDENCIES = ["aerogarden"]
 
 class AerogardenLight(Light):
     def __init__(self, macaddr, aerogarden_api, field="lightStat", label="light"):
-
         self._aerogarden = aerogarden_api
         self._macaddr = macaddr
         self._field = field
         self._label = label
         if not label:
             self._label = field
-
         self._garden_name = self._aerogarden.garden_name(self._macaddr)
-
         self._name = "%s %s %s" % (
             aerogarden.SENSOR_PREFIX,
             self._garden_name,
@@ -53,12 +50,8 @@ class AerogardenLight(Light):
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """ Setup the aerogarden platform """
-
     ag = hass.data[aerogarden.DATA_AEROGARDEN]
-
     lights = []
-
     for garden in ag.gardens:
         lights.append(AerogardenLight(garden, ag))
-
     add_devices(lights)

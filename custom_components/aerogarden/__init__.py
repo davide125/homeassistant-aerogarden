@@ -6,7 +6,6 @@ import base64
 import voluptuous as vol
 from datetime import timedelta
 
-
 from homeassistant.helpers.discovery import load_platform
 import homeassistant.helpers.config_validation as cv
 from homeassistant.const import CONF_USERNAME, CONF_PASSWORD, CONF_HOST
@@ -61,18 +60,14 @@ class AerogardenAPI:
         return self._error_msg
 
     def login(self):
-
         post_data = "mail=" + self._username + "&userPwd=" + self._password
         url = self._host + self._login_url
-
         try:
             r = requests.post(url, data=post_data, headers=self._headers)
         except RequestException:
             _LOGGER.exception("Error communicating with aerogarden servers")
             return False
-
         response = r.json()
-
         userid = response["code"]
         if userid > 0:
             self._userid = str(userid)
@@ -82,7 +77,6 @@ class AerogardenAPI:
     def is_valid_login(self):
         if self._userid:
             return True
-
         return
 
     def garden_name(self, macaddr):
@@ -93,19 +87,15 @@ class AerogardenAPI:
         return self.garden_property(macaddr, "plantedName") + "_" + multi_garden_label
 
     def garden_property(self, macaddr, field):
-
         if macaddr not in self._data:
             return None
-
         if field not in self._data[macaddr]:
             return None
-
         return self._data[macaddr].get(field, None)
 
     def light_toggle(self, macaddr):
         if macaddr not in self._data:
             return None
-
         post_data = {
             "airGuid": macaddr,
             "chooseGarden": self.garden_property(macaddr, "chooseGarden"),
@@ -114,24 +104,19 @@ class AerogardenAPI:
             % (self.garden_property(macaddr, "lightTemp")),
         }
         url = self._host + self._update_url
-
         try:
             r = requests.post(url, data=post_data, headers=self._headers)
         except RequestException:
             _LOGGER.exception("Error communicating with aerogarden servers")
             return False
-
         results = r.json()
-
         if "code" in results:
             if results["code"] == 1:
                 return True
-
         self._error_msg = "Didn't get code 1 from update API call: %s" % (
             results["msg"]
         )
         self.update(no_throttle=True)
-
         return False
 
     @property
@@ -143,31 +128,24 @@ class AerogardenAPI:
         data = {}
         if not self.is_valid_login():
             return
-
         url = self._host + self._status_url
         post_data = "userID=" + self._userid
-
         try:
             r = requests.post(url, data=post_data, headers=self._headers)
         except RequestException:
             _LOGGER.exception("Error communicating with aerogarden servers")
             return False
-
         garden_data = r.json()
-
         if "Message" in garden_data:
             self._error_msg = "Couldn't get data for garden (correct macaddr?): %s" % (
                 garden_data["Message"]
             )
             return False
-
         for garden in garden_data:
-
             if "plantedName" in garden:
                 garden["plantedName"] = base64.b64decode(garden["plantedName"]).decode(
                     "utf-8"
                 )
-
             id = garden.get("configID", None)
             gardenmac = garden["airGuid"] + "-" + ("" if id is None else str(id))
             data[gardenmac] = garden
@@ -183,19 +161,14 @@ def setup(hass, config):
     username = config[DOMAIN].get(CONF_USERNAME)
     password = config[DOMAIN].get(CONF_PASSWORD)
     host = config[DOMAIN].get(CONF_HOST)
-
     ag = AerogardenAPI(username, password, host)
     if not ag.is_valid_login():
         _LOGGER.error("Invalid login: %s" % (ag.error))
         return
-
     ag.update()
-
     # store the aerogarden API object into hass data system
     hass.data[DATA_AEROGARDEN] = ag
-
     load_platform(hass, "sensor", DOMAIN, {}, config)
     load_platform(hass, "binary_sensor", DOMAIN, {}, config)
     load_platform(hass, "light", DOMAIN, {}, config)
-
     return True
