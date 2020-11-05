@@ -104,6 +104,7 @@ class AerogardenAPI:
             % (self.garden_property(macaddr, "lightTemp")),
         }
         url = self._host + self._update_url
+        _LOGGER.debug(f"Sending POST data to toggle light: {post_data}")
         try:
             r = requests.post(url, data=post_data, headers=self._headers)
         except RequestException:
@@ -113,9 +114,8 @@ class AerogardenAPI:
         if "code" in results:
             if results["code"] == 1:
                 return True
-        self._error_msg = "Didn't get code 1 from update API call: %s" % (
-            results["msg"]
-        )
+        self._error_msg = f"Didn't get code 1 from update API call: {results}"
+        _LOGGER.exception(f"Failed to toggle light: {self._error_msg}")
         self.update(no_throttle=True)
         return False
 
@@ -149,8 +149,7 @@ class AerogardenAPI:
             id = garden.get("configID", None)
             gardenmac = garden["airGuid"] + "-" + ("" if id is None else str(id))
             data[gardenmac] = garden
-
-        _LOGGER.debug("Updating data {}".format(data))
+        _LOGGER.debug("Fetched data {}".format(data))
         self._data = data
         return True
 
