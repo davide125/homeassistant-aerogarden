@@ -10,7 +10,7 @@ DEPENDENCIES = ["aerogarden"]
 
 # since the light state seems to be unreliable on AeroGarden's servers,
 # we will only update the state on HA startup, and then rely on HA's "assumed state"
-UPDATE_STATE_FROM_CLOUD = False
+UPDATE_STATE_FROM_CLOUD = True
 
 
 class AerogardenLight(Light):
