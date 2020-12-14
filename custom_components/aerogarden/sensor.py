@@ -1,7 +1,7 @@
 import logging
 
-
 from homeassistant.helpers.entity import Entity
+
 from .. import aerogarden
 
 _LOGGER = logging.getLogger(__name__)

@@ -1,7 +1,7 @@
 import logging
 
-
 from homeassistant.components.light import Light
+
 from .. import aerogarden
 
 _LOGGER = logging.getLogger(__name__)
