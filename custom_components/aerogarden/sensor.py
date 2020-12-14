@@ -25,8 +25,7 @@ class AerogardenSensor(Entity):
 
         self._garden_name = self._aerogarden.garden_name(self._macaddr)
 
-        self._name = "%s %s %s" % (
-            aerogarden.SENSOR_PREFIX,
+        self._name = "%s %s" % (
             self._garden_name,
             self._label,
         )
@@ -60,9 +59,9 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     sensors = []
     sensor_fields = {
-        "plantedDay": {"label": "planted", "icon": "mdi:calendar", "unit": "Days"},
+        "plantedDay": {"label": "Planted Days", "icon": "mdi:calendar", "unit": "Days"},
         "nutriRemindDay": {
-            "label": "nutrient",
+            "label": "Nutrients Days",
             "icon": "mdi:calendar-clock",
             "unit": "Days",
         },

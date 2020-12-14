@@ -15,7 +15,6 @@ from homeassistant.util import Throttle
 _LOGGER = logging.getLogger(__name__)
 
 DOMAIN = "aerogarden"
-SENSOR_PREFIX = "aerogarden"
 DATA_AEROGARDEN = "AEROGARDEN"
 DEFAULT_HOST = "http://ec2-54-86-39-88.compute-1.amazonaws.com:8080"
 

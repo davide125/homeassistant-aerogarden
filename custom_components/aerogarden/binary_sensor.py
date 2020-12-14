@@ -23,8 +23,7 @@ class AerogardenBinarySensor(BinarySensorDevice):
 
         self._garden_name = self._aerogarden.garden_name(self._macaddr)
 
-        self._name = "%s %s %s" % (
-            aerogarden.SENSOR_PREFIX,
+        self._name = "%s %s" % (
             self._garden_name,
             self._label,
         )
@@ -60,15 +59,15 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         #            "icon" : "mdi:lightbulb"
         #        },
         "pumpStat": {
-            "label": "pump",
+            "label": "Pump",
             "icon": "mdi:water-pump",
         },
         "nutriStatus": {
-            "label": "need nutrients",
+            "label": "Needs Nutrients",
             "icon": "mdi:cup-water",
         },
         "pumpHydro": {
-            "label": "need water",
+            "label": "Needs Water",
             "icon": "mdi:water",
         },
     }

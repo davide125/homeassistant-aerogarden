@@ -14,7 +14,7 @@ UPDATE_STATE_FROM_CLOUD = False
 
 
 class AerogardenLight(Light):
-    def __init__(self, macaddr, aerogarden_api, field="lightStat", label="light"):
+    def __init__(self, macaddr, aerogarden_api, field="lightStat", label="Light"):
         self._aerogarden = aerogarden_api
         self._macaddr = macaddr
         self._field = field
@@ -22,8 +22,7 @@ class AerogardenLight(Light):
         if not label:
             self._label = field
         self._garden_name = self._aerogarden.garden_name(self._macaddr)
-        self._name = "%s %s %s" % (
-            aerogarden.SENSOR_PREFIX,
+        self._name = "%s %s" % (
             self._garden_name,
             self._label,
         )
