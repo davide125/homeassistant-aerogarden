@@ -1,7 +1,7 @@
 import logging
 
 
-from homeassistant.components.binary_sensor import BinarySensorDevice
+from homeassistant.components.binary_sensor import BinarySensorEntity
 
 from .. import aerogarden
 
