@@ -1,6 +1,6 @@
 import logging
 
-from homeassistant.components.light import Light
+from homeassistant.components.light import LightEntity
 
 from .. import aerogarden
 
