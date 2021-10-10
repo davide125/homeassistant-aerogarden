@@ -1,6 +1,7 @@
 import logging
 
 from homeassistant.components.light import LightEntity
+from homeassistant.helpers.device_registry import format_mac
 
 from .. import aerogarden
 
@@ -39,6 +40,10 @@ class AerogardenLight(LightEntity):
         if self._state == 1:
             return True
         return False
+
+    @property
+    def unique_id(self):
+        return "%s-%s" %(format_mac(self._macaddr), self._field)
 
     def turn_on(self, **kwargs):
         """Toggles once, to go from Off to Bright."""

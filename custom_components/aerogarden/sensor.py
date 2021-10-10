@@ -1,6 +1,7 @@
 import logging
 
 from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.device_registry import format_mac
 
 from .. import aerogarden
 
@@ -46,6 +47,10 @@ class AerogardenSensor(Entity):
     @property
     def unit_of_measurement(self):
         return self._unit
+
+    @property
+    def unique_id(self):
+        return "%s-%s" %(format_mac(self._macaddr), self._field)
 
     def update(self):
         self._aerogarden.update()

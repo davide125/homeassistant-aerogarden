@@ -2,6 +2,7 @@ import logging
 
 
 from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.helpers.device_registry import format_mac
 
 from .. import aerogarden
 
@@ -42,6 +43,10 @@ class AerogardenBinarySensor(BinarySensorEntity):
     @property
     def icon(self):
         return self._icon
+
+    @property
+    def unique_id(self):
+        return "%s-%s" %(format_mac(self._macaddr), self._field)
 
     def update(self):
         self._aerogarden.update()
